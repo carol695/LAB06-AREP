@@ -165,7 +165,29 @@ Finalmente hace la traida de datos de la base de datos:
 
 ![image](https://user-images.githubusercontent.com/63822072/223795351-09afd5a7-cbbf-4095-988f-ccc875f2f59c.png)
 
+****
+### :chart_with_downwards_trend: Prerrequisitos
 
+-   [Git](https://git-scm.com/downloads) - Sistema de control de versiones
+-   [Maven](https://maven.apache.org/download.cgi) - Gestor de dependencias
+-   [Java 8](https://www.java.com/download/ie_manual.jsp) - Entorno de desarrollo
+-   [Intellij Idea](https://www.jetbrains.com/es-es/idea/download/) (Opcional)
+
+****
+
+### :bulb: Construido con
+
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [AWS](https://aws.amazon.com/) - Instancia EC2
+* [DOCKER](https://www.docker.com/)
+
+## :mag_right: Versionamiento
+
+Para definir el versionamiento se pudo obserar los tags del repositorio, y el versionaiento es 1.0 
+
+## :woman: Actores
+
+* **Carol Tatiana Cely Rodriguez** 
 
 
 
