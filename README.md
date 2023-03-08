@@ -114,4 +114,58 @@ docker push carolcely14/taller5-arep:latest
 
 #### Descargar contenedores en EC2
 
+Para descargar los contenedores y instalarlos en una maquina EC2, primero deberemos crear una instancia EC2, crear un certificado y iniciar sesion mediante el protocolo ssh en una terminal, si su sistema operativo es Windows se recomienda el uso de una terminal Linux descargada, para este caso se utilizara el mismo GitBash.
+
+![image](https://user-images.githubusercontent.com/63822072/223793178-358612a9-5f15-4fa4-9505-c229c64f0828.png)
+
+Creación de un par de claves y grupo de seguridad 
+
+![image](https://user-images.githubusercontent.com/63822072/223793289-618eb8f8-c9fe-4fd4-a008-b221d620708a.png)
+
+![image](https://user-images.githubusercontent.com/63822072/223793391-fc194ab9-7911-4560-a3b3-fb6231db6ecd.png)
+
+ Procedemos a utilizar git bash para entrar a la terminal de aws e instalar docker 
+ 
+ ![image](https://user-images.githubusercontent.com/63822072/223793783-ce7cb84f-3a40-4032-9a16-3e2f6b950f66.png)
+
+Procederemos a actualizar el sistema mediante el comando
+
+```
+sudo yum update
+```
+Y a descargar docker en nuestra instancia de EC2 mediante el comando
+
+```
+sudo yum install docker
+```
+
+Le daremos permisos de ejecución en el sistema mediante el comando:
+
+```
+sudo service start docker
+```
+
+y cambiar los permisos de usuario del usuario user-ec2 con el siguiente comando:
+
+```
+sudo usermod -a -G docker ec2-user
+```
+Nos desconectaremos de la instancia de EC2 con exit para que los cambios surtan efecto, y nos volveremos a conectar para descargar las imágenes de DockerHub y ejecutarlas mediante el siguiente comando:
+
+docker run -d -p 42000:6000 --name firstdockerimageaws carolcely14/taller5-arep
+
+y mediante la direccion podremos acceder al servicio desplegado mediante la pagina web
+
+http://ec2-18-208-250-78.compute-1.amazonaws.com:42000/messages 
+
+Finalmente hace la traida de datos de la base de datos:
+
+![image](https://user-images.githubusercontent.com/63822072/223795433-3b66905a-fa2f-4e18-b322-7836acabb837.png)
+
+
+![image](https://user-images.githubusercontent.com/63822072/223795351-09afd5a7-cbbf-4095-988f-ccc875f2f59c.png)
+
+
+
+
 
