@@ -20,7 +20,7 @@ public class MongoDBConnection {
     private MongoDatabase database;
 
     public MongoDBConnection() {
-        uri = new MongoClientURI("mongodb+srv://admin:admin@cluster0.uzjzhdh.mongodb.net/?retryWrites=true&w=majority");
+        uri = new MongoClientURI("mongodb://admin:admin@ac-oiut70d-shard-00-00.uzjzhdh.mongodb.net:27017,ac-oiut70d-shard-00-01.uzjzhdh.mongodb.net:27017,ac-oiut70d-shard-00-02.uzjzhdh.mongodb.net:27017/?ssl=true&replicaSet=atlas-i29clf-shard-0&authSource=admin&retryWrites=true&w=majority");
         client = new MongoClient(uri);
         database = client.getDatabase("db");
     }
