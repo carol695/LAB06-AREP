@@ -87,4 +87,21 @@ esta estará montada en una instancia de EC2 que posteriormente será conectada 
 
 ### Creación de repositorio y cargar imagenes a DockerHub
 
+Para subir una imagen a DockerHub se debera tener una cuenta creada en el mismo, y crear 2 repositorios, uno para la base de datos MongoDB y otro para la aplicación Java, posteriormente utilizaremos el siguiente comando para asociar cada una de las imágenes a un repositorio en DockerHub.
+
+![image](https://user-images.githubusercontent.com/63822072/223776791-f2710378-aa96-4975-a146-d430deb169a1.png)
+
+Primero deberemos iniciar sesión en docker mediante el comando
+
+docker login
+Pondremos nuestras credenciales, y ahora asociaremos las imagenes al repositorio creado mediante el comando:
+
+docker tag dockersparkprimer carolcely14/taller5-arep
+
+Y ahora subiremos las imagenes mediante el comando
+
+docker push carolcely14/taller5-arep:latest
+
+#### Descargar contenedores en EC2
+
 
