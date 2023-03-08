@@ -33,7 +33,7 @@ La aplicación inicial llamada RoundRobin va a recibir las los logs por parte de
 esta estará montada en una instancia de EC2 que posteriormente será conectada a un LoadBalancer el cual conectara 
 3 imagenes docker corriendo por distintos puertos y guardara los logs en la base de datos MongoDB.
 
-#### Arquitectura 
+### Arquitectura 
 
 ![image](https://user-images.githubusercontent.com/63822072/223749189-975c1c01-1a46-4ddf-a5b5-281a7d0f2379.png)
 
@@ -53,7 +53,7 @@ esta estará montada en una instancia de EC2 que posteriormente será conectada 
 
 ![image](https://user-images.githubusercontent.com/63822072/223749992-68518269-cbcd-4aa7-ba16-b084166c7346.png)
 
-#### Creación de contenedores
+### Creación de contenedores
 
 5. Se genera el siguiente archivo **Dockerfile**
 
@@ -79,7 +79,7 @@ esta estará montada en una instancia de EC2 que posteriormente será conectada 
 
 ![image](https://user-images.githubusercontent.com/63822072/223754269-6877f5cf-06f7-46be-b090-8b7e3c8fb99b.png)
 
-#### Creación de servicios 
+### Creación de servicios 
 
 10. Al ejecutar docker ps, se verá así: 
 
@@ -112,7 +112,7 @@ docker push carolcely14/taller5-arep:latest
 ![image](https://user-images.githubusercontent.com/63822072/223777318-96e4180d-abe3-4250-80ff-d506f2f8134d.png)
 
 
-#### Descargar contenedores en EC2
+### Descargar contenedores en EC2
 
 Para descargar los contenedores y instalarlos en una maquina EC2, primero deberemos crear una instancia EC2, crear un certificado y iniciar sesion mediante el protocolo ssh en una terminal, si su sistema operativo es Windows se recomienda el uso de una terminal Linux descargada, para este caso se utilizara el mismo GitBash.
 
