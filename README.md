@@ -93,14 +93,24 @@ Para subir una imagen a DockerHub se debera tener una cuenta creada en el mismo,
 
 Primero deberemos iniciar sesión en docker mediante el comando
 
+```
 docker login
+```
+
 Pondremos nuestras credenciales, y ahora asociaremos las imagenes al repositorio creado mediante el comando:
 
+```
 docker tag dockersparkprimer carolcely14/taller5-arep
+```
 
 Y ahora subiremos las imagenes mediante el comando
 
+```
 docker push carolcely14/taller5-arep:latest
+```
+
+![image](https://user-images.githubusercontent.com/63822072/223777318-96e4180d-abe3-4250-80ff-d506f2f8134d.png)
+
 
 #### Descargar contenedores en EC2
 
