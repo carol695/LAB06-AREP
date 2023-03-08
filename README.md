@@ -13,7 +13,7 @@ Finalmente, crearemos una máquina virtual de en AWS, instalaremos Docker , y de
 **1. Para empezar se clona el repositorio colocando el siguiente comando**
 
 ```
-git clone https://github.com/carol695/Taller4-AREP.git
+git clone https://github.com/carol695/Taller5-AREP.git
 ```
 **2. Ya clonado el repositorio abrimos el laboratorio utilizando cualquier de los siguientes IDE.**
 
@@ -21,10 +21,10 @@ git clone https://github.com/carol695/Taller4-AREP.git
 * eclipse.
 * visual Studio code. 
 
-**3. Luego de abrir el laboratorio, corremos el proyecto. Para este caso colocaremos lo siguiente:**
+**3. Luego debe redirigirse por medio de la terminal al directorio en donde se clonó el proyecto la cual contendrá el archivo pom.xml. Una vez ubicado en este directorio se debe compilar el programa, para esto, utilice el siguiente comando:**
 
 ```
-git clean package exec:java -D"exec.mainClass"="edu.escuelaing.arem.app.WebApss.FirstApp"
+mvn package
 ```
 
 ### :newspaper: Diseño 
