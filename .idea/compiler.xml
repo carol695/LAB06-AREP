@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Taller5-AREP" />
         <module name="TALLER5-AREP" />
+        <module name="LAB06-AREP" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LAB06-AREP" options="-parameters" />
       <module name="Taller5-AREP" options="-parameters" />
     </option>
   </component>
