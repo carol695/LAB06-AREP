@@ -24,7 +24,7 @@ import com.mongodb.client.MongoDatabase;
 public class Connection {
 
     private MongoClient client = null;
-    private String url = "54.226.144.57:27017";
+    private String url = "100.26.247.105:27017";
     private MongoDatabase db = null;
     private MongoCollection<Document> collection;
 
