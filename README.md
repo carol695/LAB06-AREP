@@ -1,169 +1,132 @@
 # TALLER DE DE MODULARIZACIÓN CON VIRTUALIZACIÓN E INTRODUCCIÓN A DOCKER Y A AWS
 
 Creación de una aplicación web pequeña usando el micro-framework de Spark java (http://sparkjava.com/). 
-Una vez tengamos esta aplicación procederemos a construir un container para docker para la aplicación y los 
-desplegaremos y configuraremos en nuestra máquina local. Luego, cerremos un repositorio en DockerHub y subiremos la imagen al repositorio. 
-Finalmente, crearemos una máquina virtual de en AWS, instalaremos Docker , y desplegaremos el contenedor que acabamos de crear.
+Una vez tengamos esta aplicación procederemos a construir una aplicación con la arquitectura propuesta y desplegarla en AWS usando EC2, ELB y autoescalado.
+
+1. El servicio MongoDB es una instancia de MongoDB corriendo en una máquina virtual de EC2
+
+2. LogService es un servicio REST que recibe una cadena, la almacena en la base de datos y responde en un objeto JSON con las 10 ultimas cadenas almacenadas en la base de datos y la fecha en que fueron almacenadas.
+
+3. La aplicación web APP-LB-RoundRobin está compuesta por un cliente web y al menos un servicio REST. El cliente web tiene un campo y un botón y cada vez que el usuario envía un mensaje, este se lo envía al servicio REST y actualiza la pantalla con la información que este le regresa en formato JSON. El servicio REST recibe la cadena e implementa un algoritmo de balanceo de cargas de Round Robin, delegando el procesamiento del mensaje y el retorno de la respuesta a cada una de las tres instancias del servicio LogService.
+
 
 **** 
 ## Empezando
 
-### 🛠️ Abre y ejecuta el proyecto
-
-**1. Para empezar se clona el repositorio colocando el siguiente comando**
-
-```
-git clone https://github.com/carol695/Taller5-AREP.git
-```
-**2. Ya clonado el repositorio abrimos el laboratorio utilizando cualquier de los siguientes IDE.**
-
-* Intellij.
-* eclipse.
-* visual Studio code. 
-
-**3. Luego debe redirigirse por medio de la terminal al directorio en donde se clonó el proyecto la cual contendrá el archivo pom.xml. Una vez ubicado en este directorio se debe compilar el programa, para esto, utilice el siguiente comando:**
-
-```
-mvn package
-```
-
 ### :newspaper: Diseño 
 
-La aplicación inicial llamada RoundRobin va a recibir las los logs por parte del usuario, 
-esta estará montada en una instancia de EC2 que posteriormente será conectada a un LoadBalancer el cual conectara 
-3 imagenes docker corriendo por distintos puertos y guardara los logs en la base de datos MongoDB.
+Aplicación que recibe una cadena cualquiera, esta es recibida y es guardada en una base de datos Mongo, esta acción puede ser realizada por 3 instancias diferentes, presentes en los puertos 34000, 34001 y 34002. Una vez esta es recibida se muestra un json con las ultimas 10 cadenas enviadas junto con la fecha y hora en que se enviaron.
 
-### Arquitectura 
+### :mag_right: Arquitectura 
 
-![image](https://user-images.githubusercontent.com/63822072/223749189-975c1c01-1a46-4ddf-a5b5-281a7d0f2379.png)
+![image](https://user-images.githubusercontent.com/63822072/225338566-0b6245a8-b201-4dfc-b7f9-3394ddc69361.png)
+
+****
 
 ### :bulb: Construcción 
 
-1. Se crea una cuenta en MongoDB 
+#### Creación de instancias 
 
-![image](https://user-images.githubusercontent.com/63822072/223749607-30bd361b-60cf-4199-9d03-f5620682e5e9.png)
+![image](https://user-images.githubusercontent.com/63822072/225340109-60358644-f867-43cd-9435-f3959775ab91.png)
 
-2. Se crea un proyecto con las siguientes clases: 
+### Uso del proyecto antes creado
 
-![image](https://user-images.githubusercontent.com/63822072/223749725-de86db2f-866b-424f-aa1c-647c3efd98a9.png)
+![image](https://user-images.githubusercontent.com/63822072/225341094-fe0cab4e-0922-4682-a72b-768156d91da7.png)
 
-3. Se configura el pom y se genera las diferentes dependencias en .target 
+### Instalacion de java en las instancias de logService y roundRobin e intalación de mongoDB
 
-4. Al correr se verá así: 
+#### logService1
 
-![image](https://user-images.githubusercontent.com/63822072/223749992-68518269-cbcd-4aa7-ba16-b084166c7346.png)
+![image](https://user-images.githubusercontent.com/63822072/225344262-ae239a98-6152-4154-8814-63af3874c32c.png)
 
-### Creación de contenedores
+#### logService2
 
-5. Se genera el siguiente archivo **Dockerfile**
+![image](https://user-images.githubusercontent.com/63822072/225344304-f589ed16-fffc-4328-a36d-f1d4c0acb54a.png)
 
-![image](https://user-images.githubusercontent.com/63822072/223750485-62a98761-f2a0-4db6-8aaa-977cee631863.png)
+#### logService3
 
-6. Creación de la imagen de docker 
+![image](https://user-images.githubusercontent.com/63822072/225344345-d440a6b9-249d-4abc-a469-959727b873f4.png)
 
-![image](https://user-images.githubusercontent.com/63822072/223751030-c44e565c-a465-4fe4-b2d4-25049e2a3e25.png)
+#### roundRobin
 
-7. Luego de crear tres instancias de un contenedor docker, nos aseguramos que esta corriendo 
+![image](https://user-images.githubusercontent.com/63822072/225344385-8e49640f-2a55-4af4-81ae-758b0e5269b9.png)
 
-![image](https://user-images.githubusercontent.com/63822072/223752348-17fad939-3899-493c-8f9a-4b8dcb849850.png)
+#### mongoDB
 
-![image](https://user-images.githubusercontent.com/63822072/223752502-721f0435-da96-4a68-8193-195ad96c069b.png)
+Ahora implementaremos el servidor de mongo db.
 
-8. Creamos un archivo llamado docker-compose.yml
-
-![image](https://user-images.githubusercontent.com/63822072/223752994-dbe5c97d-16c2-48ad-b42e-e10ff3d53919.png)
-
-9. Al ejecutarse docker-compose up -d se mira así:
-
-![image](https://user-images.githubusercontent.com/63822072/223753554-4e965d23-e3db-4e36-baa1-fb73dcab08b2.png)
-
-![image](https://user-images.githubusercontent.com/63822072/223754269-6877f5cf-06f7-46be-b090-8b7e3c8fb99b.png)
-
-### Creación de servicios 
-
-10. Al ejecutar docker ps, se verá así: 
-
-![image](https://user-images.githubusercontent.com/63822072/223755418-645a1a57-3bbd-43c5-86a8-d91a1c86cc76.png)
-
-### Creación de repositorio y cargar imagenes a DockerHub
-
-Para subir una imagen a DockerHub se debera tener una cuenta creada en el mismo, y crear 2 repositorios, uno para la base de datos MongoDB y otro para la aplicación Java, posteriormente utilizaremos el siguiente comando para asociar cada una de las imágenes a un repositorio en DockerHub.
-
-![image](https://user-images.githubusercontent.com/63822072/223776791-f2710378-aa96-4975-a146-d430deb169a1.png)
-
-Primero deberemos iniciar sesión en docker mediante el comando
+Para esto abrimos una consola de la instancia de mongo localmente y por medio de vi creamos el siguiente archivo:
 
 ```
-docker login
-```
-
-Pondremos nuestras credenciales, y ahora asociaremos las imagenes al repositorio creado mediante el comando:
+vi /etc/yum.repos.d/mongodb-org-6.0.repo
 
 ```
-docker tag dockersparkprimer carolcely14/taller5-arep
-```
-
-Y ahora subiremos las imagenes mediante el comando
+le agregamos la siguiente información:
 
 ```
-docker push carolcely14/taller5-arep:latest
-```
-
-![image](https://user-images.githubusercontent.com/63822072/223777318-96e4180d-abe3-4250-80ff-d506f2f8134d.png)
-
-
-### Descargar contenedores en EC2
-
-Para descargar los contenedores y instalarlos en una maquina EC2, primero deberemos crear una instancia EC2, crear un certificado y iniciar sesion mediante el protocolo ssh en una terminal, si su sistema operativo es Windows se recomienda el uso de una terminal Linux descargada, para este caso se utilizara el mismo GitBash.
-
-![image](https://user-images.githubusercontent.com/63822072/223793178-358612a9-5f15-4fa4-9505-c229c64f0828.png)
-
-Creación de un par de claves y grupo de seguridad 
-
-![image](https://user-images.githubusercontent.com/63822072/223793289-618eb8f8-c9fe-4fd4-a008-b221d620708a.png)
-
-![image](https://user-images.githubusercontent.com/63822072/223793391-fc194ab9-7911-4560-a3b3-fb6231db6ecd.png)
-
- Procedemos a utilizar git bash para entrar a la terminal de aws e instalar docker 
- 
- ![image](https://user-images.githubusercontent.com/63822072/223793783-ce7cb84f-3a40-4032-9a16-3e2f6b950f66.png)
-
-Procederemos a actualizar el sistema mediante el comando
+[mongodb-org-6.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/6.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc
 
 ```
-sudo yum update
-```
-Y a descargar docker en nuestra instancia de EC2 mediante el comando
+Ahora debemos decirle a mongo que acepte cualquier ip para consultar la basen de datos.
+
+Entramos al archivo mongod.conf con el siguiente comando:
 
 ```
-sudo yum install docker
-```
-
-Le daremos permisos de ejecución en el sistema mediante el comando:
+/etc/mongod.conf
 
 ```
-sudo service start docker
-```
+Y cambios la seccion bindIP.
 
-y cambiar los permisos de usuario del usuario user-ec2 con el siguiente comando:
+![image](https://user-images.githubusercontent.com/63822072/225344601-4ef5a2a5-4f6c-4fdf-b8fe-5d4bd3edc7f6.png)
 
-```
-sudo usermod -a -G docker ec2-user
-```
-Nos desconectaremos de la instancia de EC2 con exit para que los cambios surtan efecto, y nos volveremos a conectar para descargar las imágenes de DockerHub y ejecutarlas mediante el siguiente comando:
+![image](https://user-images.githubusercontent.com/63822072/225345354-47bdea6c-7a0d-49f8-a60f-07008ce562b4.png)
 
-docker run -d -p 42000:6000 --name firstdockerimageaws carolcely14/taller5-arep
+Comenzar mongo y ver el estado 
 
-y mediante la direccion podremos acceder al servicio desplegado mediante la pagina web
+![image](https://user-images.githubusercontent.com/63822072/225345449-1f656077-ead4-4f13-8d7c-baa35106d42a.png)
 
-http://ec2-18-208-250-78.compute-1.amazonaws.com:42000/messages 
+### target.zip en las instancias excepto en la de mongoDB 
 
-Finalmente hace la traida de datos de la base de datos:
+#### logService1
 
-![image](https://user-images.githubusercontent.com/63822072/223795433-3b66905a-fa2f-4e18-b322-7836acabb837.png)
+![image](https://user-images.githubusercontent.com/63822072/225345889-b1524955-d6a6-4b4a-bb39-621801ced775.png)
 
+#### logService2
 
-![image](https://user-images.githubusercontent.com/63822072/223795351-09afd5a7-cbbf-4095-988f-ccc875f2f59c.png)
+![image](https://user-images.githubusercontent.com/63822072/225345963-49fab203-2991-4b93-9148-b3705ee9c34c.png)
+
+#### logService3
+
+![image](https://user-images.githubusercontent.com/63822072/225346000-e317de4b-a7b2-4ce4-b393-baa213be19f9.png)
+
+#### roundRobin
+
+![image](https://user-images.githubusercontent.com/63822072/225346051-328bf954-1988-40f9-b93e-ec3657f32011.png)
+
+### Abrir puertos 
+
+En cada uno de los grupos de seguridad se abren los puertos 4567 y 4566 y en la de mongo se abre el Puerto 27017
+
+![image](https://user-images.githubusercontent.com/63822072/225346171-1b9d9505-f677-4c08-a830-837efa5643fa.png)
+
+### Ejecución
+
+#### RoundRobin
+
+![image](https://user-images.githubusercontent.com/63822072/225346351-14771753-00d0-41b6-9673-a5b84968ef79.png)
+
+#### logService
+
+![image](https://user-images.githubusercontent.com/63822072/225346376-ac4ea121-5dc2-47fe-b913-4615e9350ca3.png)
+
+### Pruebas
+
+![image](https://user-images.githubusercontent.com/63822072/225348271-f9abdec4-274f-476c-a728-504abae565c6.png)
 
 ****
 ### :chart_with_downwards_trend: Prerrequisitos
@@ -179,7 +142,6 @@ Finalmente hace la traida de datos de la base de datos:
 
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [AWS](https://aws.amazon.com/) - Instancia EC2
-* [DOCKER](https://www.docker.com/)
 
 ## :mag_right: Versionamiento
 
